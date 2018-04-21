@@ -1,6 +1,6 @@
 # node-koa-learn
 ## 配置环境：
-Koa依赖node v7.6.0或者ES2015及更高版本和async方法的支持
+Koa依赖node v7.6.0或者ES2015及更高版本和async方法的支持
 
 首先要在node<7.6版本的Koa中使用async方法，需要两步：
  
@@ -31,7 +31,6 @@ const Koa=require('koa');
 const app=new Koa();
 http.createServer(app.callback()).listen(3000);
 ```
-
 ## 中间件 - Cascader级联
 解析app.js的运行过程：
 
@@ -72,7 +71,6 @@ app.listen(3000);
 ```
 
 >为什么中间件的执行要从上往下一层层的执行，然后再从下往上回去？
-
 这就是为了解决复杂应用中频繁的回调而设计的级联代码，并不直接把控制权完全交给下一个中间件，而是碰到next去下一个中间件，等下面都执行完了，还会执行next以下的内容
 
 ## Context - 上下文
