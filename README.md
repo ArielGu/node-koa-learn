@@ -1,31 +1,41 @@
 # node-koa-learn
+
 ## 配置环境：
+
 Koa依赖node v7.6.0或者ES2015及更高版本和async方法的支持
 
 首先要在node<7.6版本的Koa中使用async方法，需要两步：
- 
+
 1. 需要babel转译(babel's require hook)
-```
+
+```javasript
 require('babel-register');
 // 应用的其余 require 需要被放到 hook 后面
 const app = require('./app');
 ```
-2. 使用 **transform-async-to-generator** 和 **transform-async-to-module-method** 插件来解析和转译async-function。例如在.babelrc文件中：
-```
+
+1. 使用 **transform-async-to-generator** 和 **transform-async-to-module-method** 插件来解析和转译async-function。例如在.babelrc文件中：
+
+```json
 {
   "plugins": ["transform-async-to-generator"]
 }
 ```
+
 ## Application - 应用
+
 一个Koa Application(简称app)是由一系列的generator中间件组成，按照顺序在栈内依次执行。如何理解
 >Koa设计点是在其低级中间件层中提供高级“语法糖”
 
 Koa提供了一种基于底层中间件编写(语法糖)的设计思路，例如(Demo1中app.js和test.js就是两种方法的对比)
-```
+
+```javascript
 app.listen(3000);
 ```
+
 其对应一下的语法糖：
-```
+
+```javascript
 const http=require('http');
 const Koa=require('koa');
 const app=new Koa();
@@ -33,11 +43,12 @@ http.createServer(app.callback()).listen(3000);
 ```
 
 ## 中间件 - Cascader级联
+
 解析app.js的运行过程：
 
 当程序运行到 yield next 时，代码流会暂停执行这个中间件的剩余代码，转而切换到下一个被定义的中间件执行代码，这样切换控制权的方式，被称为 downstream，当没有下一个中间件执行 downstream 的时候，代码将会逆序执行。
 
-```
+```javascript
 var koa = require('koa');
 var app = koa();
 
@@ -76,4 +87,5 @@ app.listen(3000);
 这就是为了解决复杂应用中频繁的回调而设计的级联代码，并不直接把控制权完全交给下一个中间件，而是碰到next去下一个中间件，等下面都执行完了，还会执行next以下的内容。
 
 ## Context - 上下文
+
 Koa Context 将 node原生的 request 和 response 对象封装到单个对象中
